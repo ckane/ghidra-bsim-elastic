@@ -43,3 +43,20 @@ like so, with the password `secretpw`:
 ```
 
 # Adding Samples to the Database
+
+Ghidra's `analyzeHeadless` has a nice feature that can bulk-discover samples in a provided directory, and import them
+into a named project within a workspace. To simplify things a bit, for this demo I have hard-coded the folder `./bsim_projects`
+as the workspace folder for use. So, if you wish to open up any of the samples that are databased in Ghidra's UI or via its
+`analyzeHeadless` script, these projects will all be collected there.
+
+To ingest a folder containing a bunch of malware into Ghidra, run the following command (it will, similar to the setup script,
+ask you to manually enter the `elastic` user's password):
+```sh
+./add_samples.sh projectname /path/to/samples
+```
+
+The above script will perform ~4 steps:
+1. Create a new project named `projectname` within the workspace (if one doesn't exist yet)
+2. Ingest all of the supported malware samples into the project `projectname`, running the `TailoredAnalysis.java` script on them all
+3. Scan the entire project `projectname` for all samples within it, generate function signatures, store them in the BSim database
+3. Write the XML signature data into the `./bsim_xml` directory, in case you want to explore/use it further
